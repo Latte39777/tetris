@@ -1,16 +1,6 @@
 import { useState } from 'react';
 import styles from './index.module.css';
 
-const direction = [
-  [1, 0],
-  [1, 1],
-  [0, 1],
-  [1, -1],
-  [0, -1],
-  [-1, -1],
-  [-1, 0],
-  [-1, 1],
-];
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
@@ -29,15 +19,15 @@ const Home = () => {
     const newBoard = structuredClone(board);
     newBoard[y][x] = turnColor;
 
-    function findElementInDirection(matrix, directionX, directionY, targetElement) {
-      let newX = x + directionX;
-      let newY = y + directionY;
-
-      while (newX >= 0 && newX < matrix.length && newY >= 0 && newY < matrix[0].length) {
-        if (matrix[newX][newY] === targetElement) return [newX, newY];
+    function findElementInDirection([matrix, newX, newY, directionX, directionY]) {
+      (x = newX), (y = newY);
+      (directionX = 1), (directionY = 1);
+      console.log(newX, newY);
+      const newBoard = structuredClone(board);
+      if ((newBoard[newX][newY] = 2)) {
+        const newX = x + directionX;
+        const newY = y + directionY;
       }
-      newX = newX + directionX;
-      newY = newY + directionY;
     }
 
     setTurnColor(3 - turnColor);
