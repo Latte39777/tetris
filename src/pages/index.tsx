@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './index.module.css';
+import { runInNewContext } from 'vm';
 
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
@@ -19,15 +20,39 @@ const Home = () => {
     const newBoard = structuredClone(board);
     newBoard[y][x] = turnColor;
 
-    function findElementInDirection([matrix, newX, newY, directionX, directionY]) {
-      (x = newX), (y = newY);
-      (directionX = 1), (directionY = 1);
-      console.log(newX, newY);
-      const newBoard = structuredClone(board);
-      if ((newBoard[newX][newY] = 2)) {
-        const newX = x + directionX;
-        const newY = y + directionY;
+    const directions = [
+      [0, 1],
+      [1, 1],
+      [1, 0],
+      [1, -1],
+      [0, -1],
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+    ];
+    function checkSameColor(x: number, y: number) {
+      const foundCoordinates = [];
+
+      for (const direction of directions) {
+        const dx = direction[0];
+        const dy = direction[1];
+
+        const newX = x + dx;
+        const newY = y + dy;
+
+        if (isNewValid(newX, newY) && isSameColor(newX, newY)) {
+          newBoard[newY][newX] = 3 - turnColor;
+          foundCoordinates.push([newX, newY]);
+        }
       }
+    }
+
+    function isNewValid(x: number, y: number) {
+      return x >= 0 && x < boardWidth && y >= 0 && y < boardHeight;
+    }
+
+    function isSameColor(x: number, y: number) {
+      return board[x][y] === 3 - turnColor;
     }
 
     setTurnColor(3 - turnColor);
