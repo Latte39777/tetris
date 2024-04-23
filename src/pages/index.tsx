@@ -18,22 +18,22 @@ const directions = [
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 2, 1],
+    [0, 0, 0, 0, 0, 1, 2, 1],
+    [0, 0, 0, 0, 2, 1, 2, 1],
+    [0, 0, 0, 1, 2, 1, 2, 1],
+    [0, 0, 2, 1, 2, 1, 2, 1],
+    [0, 1, 1, 2, 1, 2, 1, 2],
     // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 1],
-    // [0, 0, 0, 0, 0, 0, 2, 1],
-    // [0, 0, 0, 0, 0, 1, 2, 1],
-    // [0, 0, 0, 0, 2, 1, 2, 1],
-    // [0, 0, 0, 1, 2, 1, 2, 1],
-    // [0, 0, 2, 1, 2, 1, 2, 1],
-    // [0, 1, 1, 2, 1, 2, 1, 2],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 2, 1, 0, 0, 0],
-    [0, 0, 0, 1, 2, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 2, 1, 0, 0, 0],
+    // [0, 0, 0, 1, 2, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
   const clickHandler = (x: number, y: number) => {
@@ -46,14 +46,15 @@ const Home = () => {
 
       for (const direction of directions) {
         console.log(2);
-        const dx = direction[0];
-        const dy = direction[1];
+        const dx = 0;
+        // direction[0];
+        const dy = 1;
+        // direction[1];
+        //const newX = x + dx;
+        //const newY = y + dy;
 
-        const newX = x + dx;
-        const newY = y + dy;
-
-        for (let i = 1; i <= 6; i++)
-          if (isNewValid(x + dx * 1, newY) && isAnotherColor(newX, newY)) {
+        for (let a = 1; a <= 7; a++) {
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isAnotherColor(x + dx * 2, y + dy * 2)) {
               if (isNewValid(x + dx * 3, y + dy * 3) && isAnotherColor(x + dx * 3, y + dy * 3)) {
                 if (isNewValid(x + dx * 4, y + dy * 4) && isAnotherColor(x + dx * 4, y + dy * 4)) {
@@ -83,7 +84,8 @@ const Home = () => {
                 }
               }
             }
-
+          }
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isAnotherColor(x + dx * 2, y + dy * 2)) {
               if (isNewValid(x + dx * 3, y + dy * 3) && isAnotherColor(x + dx * 3, y + dy * 3)) {
                 if (isNewValid(x + dx * 4, y + dy * 4) && isAnotherColor(x + dx * 4, y + dy * 4)) {
@@ -104,7 +106,9 @@ const Home = () => {
                 }
               }
             }
+          }
 
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isAnotherColor(x + dx * 2, y + dy * 2)) {
               if (isNewValid(x + dx * 3, y + dy * 3) && isAnotherColor(x + dx * 3, y + dy * 3)) {
                 if (isNewValid(x + dx * 4, y + dy * 4) && isAnotherColor(x + dx * 4, y + dy * 4)) {
@@ -119,7 +123,9 @@ const Home = () => {
                 }
               }
             }
+          }
 
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isAnotherColor(x + dx * 2, y + dy * 2)) {
               if (isNewValid(x + dx * 3, y + dy * 3) && isAnotherColor(x + dx * 3, y + dy * 3)) {
                 if (isNewValid(x + dx * 4, y + dy * 4) && isSameColor(x + dx * 4, y + dy * 4)) {
@@ -131,7 +137,8 @@ const Home = () => {
                 }
               }
             }
-
+          }
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isAnotherColor(x + dx * 2, y + dy * 2)) {
               if (isNewValid(x + dx * 3, y + dy * 3) && isSameColor(x + dx * 3, y + dy * 3)) {
                 newBoard[y][x] = turnColor;
@@ -140,7 +147,8 @@ const Home = () => {
                 setTurnColor(3 - turnColor);
               }
             }
-
+          }
+          if (isNewValid(x + dx * 1, y + dy * 1) && isAnotherColor(x + dx * 1, y + dy * 1)) {
             if (isNewValid(x + dx * 2, y + dy * 2) && isSameColor(x + dx * 2, y + dy * 2)) {
               newBoard[y][x] = turnColor;
               newBoard[y + dy * 1][x + dx * 1] = turnColor;
@@ -150,6 +158,7 @@ const Home = () => {
               // foundCoordinates.push([newX, newY]);
             }
           }
+        }
       }
     }
 
