@@ -54,9 +54,8 @@ const Home = () => {
   const newBoard = structuredClone(board);
 
   const clickHandler = (x: number, y: number) => {
-    // console.log(x, y);
-    // console.log(turnColor);
-    // const newBoard = structuredClone(board);
+    console.log(x, y);
+    console.log(turnColor);
 
     if ((isNewValid(x, y) && isZeroColor(x, y)) || Represent(x, y)) {
       for (const direction of directions) {
@@ -69,9 +68,8 @@ const Home = () => {
               isSameColor(x + dx * (a + 1), y + dy * (a + 1))
             ) {
               for (let b = 1; b <= a; b++) {
-                console.log('ううう');
-                newBoard[y][x] = turnColor;
                 newBoard[y + dy * b][x + dx * b] = turnColor;
+                // newBoard[y][x] = turnColor;
                 setTurnColor(3 - turnColor);
                 // setBoard(newBoard);
                 setBoard(structuredClone(board));
@@ -97,10 +95,6 @@ const Home = () => {
   };
 
   const getPutPlace = (x: number, y: number) => {
-    console.log(x, y);
-    console.log(turnColor);
-
-    // const newBoard = structuredClone(board);
     // = JSON.parse(JSON.stringify(board));
 
     for (let c = 0; c <= 7; c++) {
@@ -111,17 +105,16 @@ const Home = () => {
             const dy = direction[1]; //1;
             for (let a: number = 1; a <= 6; a++) {
               if (isNewValid(c + dx * a, d + dy * a) && isAnotherColor(c + dx * a, d + dy * a)) {
-                console.log(x, y, 'a', c, d);
                 if (
                   isNewValid(c + dx * (a + 1), d + dy * (a + 1)) &&
                   isSameColor(c + dx * (a + 1), d + dy * (a + 1))
                 ) {
-                  console.log(x, y, 'bb', c, d);
-                  // newBoard[y][x] = turnColor;
-                  // setTurnColor(3 - turnColor);
                   newBoard[d][c] = 3;
-                  // setBoard(structuredClone(board));
-                  setBoard(newBoard);
+                  if (isNewValid(c, d) === isNewValid(x, y)) {
+                    // setBoard(structuredClone(board));
+
+                    newBoard[y][x] = turnColor;
+                  }
                 }
               }
 
@@ -141,6 +134,7 @@ const Home = () => {
         }
       }
     }
+    setBoard(newBoard);
   };
 
   return (
