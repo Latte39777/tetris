@@ -1,10 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './index.module.css';
-import { get } from 'http';
-
-function isNewValid(x: number, y: number) {
-  return x >= 0 && x < 8 && y >= 0 && y < 8;
-}
 
 const directions = [
   [0, 1],
@@ -17,17 +12,66 @@ const directions = [
   [-1, 1],
 ];
 
+const reversePlace = (x: number, y: number, board: number[][], turnColor: number) => {
+  board[y][x] = turnColor;
+  for (const direction of directions) {
+    const dx = direction[0];
+    const dy = direction[1];
+    for (let a: number = 1; a <= 6; a++) {
+      if (board[y + dy * a] !== undefined && board[y + dy * a][x + dx * a] === 3 - turnColor) {
+        if (
+          board[y + dy * (a + 1)] !== undefined &&
+          board[y + dy * (a + 1)][x + dx * (a + 1)] === turnColor
+        ) {
+          for (let b: number = 1; b <= a; b++) {
+            board[y + dy * b][x + dx * b] = turnColor;
+          }
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+  }
+  return board;
+};
+
+const getPutPlace = (board: number[][], turnColor: number, passCount: number) => {
+  let candidatecount = 0;
+  for (let c = 0; c <= 7; c++) {
+    for (let d = 0; d <= 7; d++) {
+      if (board[d][c] === 0 || board[d][c] === 3) {
+        board[d][c] = 0;
+        for (const direction of directions) {
+          const dx = direction[0];
+          const dy = direction[1];
+          for (let a: number = 1; a <= 6; a++) {
+            if (board[d + dy * a] !== undefined && board[d + dy * a][c + dx * a] === turnColor) {
+              if (
+                board[d + dy * (a + 1)] !== undefined &&
+                board[d + dy * (a + 1)][c + dx * (a + 1)] === 3 - turnColor
+              ) {
+                candidatecount++;
+                board[d][c] = 3;
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (candidatecount === 0 && passCount <= 2) {
+    getPutPlace(board, 3 - turnColor, 1 + passCount);
+  }
+  return board;
+};
+
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
-    // [1, 2, 0, 0, 0, 0, 0, 0],
-    // [2, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
-    // [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 3, 0, 0, 0, 0],
@@ -38,114 +82,30 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
-  const [blackStones, setBlackStones] = useState(0);
-  const [whiteStones, setWhiteStones] = useState(0);
-
-  function isAnotherColor(x: number, y: number) {
-    return board[y][x] === 3 - turnColor;
-  }
-  function isSameColor(x: number, y: number) {
-    return board[y][x] === turnColor;
-  }
-  function isZeroColor(x: number, y: number) {
-    return board[y][x] === 0;
-  }
-  function Represent(x: number, y: number) {
-    return board[y][x] === 3;
-  }
-
-  const newBoard = structuredClone(board);
-
-  useEffect(() => {
-    getPutPlace();
-  }, [turnColor]);
-
+  const passCount = 0;
   const clickHandler = (x: number, y: number) => {
-    console.log(x, y);
-    console.log(turnColor);
-
-    if (isNewValid(x, y) && Represent(x, y)) {
-      newBoard[y][x] = turnColor;
+    if (board[y][x] === 3) {
+      const newBoard = structuredClone(board);
+      const reversed = reversePlace(x, y, newBoard, turnColor);
+      const getPutted = getPutPlace(reversed, turnColor, passCount);
       setTurnColor(3 - turnColor);
-      for (const direction of directions) {
-        const dx = direction[0];
-        const dy = direction[1];
-        for (let a: number = 1; a <= 6; a++) {
-          if (isNewValid(x + dx * a, y + dy * a) && isAnotherColor(x + dx * a, y + dy * a)) {
-            if (
-              isNewValid(x + dx * (a + 1), y + dy * (a + 1)) &&
-              isSameColor(x + dx * (a + 1), y + dy * (a + 1))
-            ) {
-              for (let b = 1; b <= a; b++) {
-                newBoard[y + dy * b][x + dx * b] = turnColor;
-              }
-              break;
-            }
-          } else {
-            break;
-          }
-        }
-      }
+      setBoard(getPutted);
     }
-    setBoard(newBoard);
-  };
-
-  const getPutPlace = () => {
-    let candidatecount = 0;
-    for (let c = 0; c <= 7; c++) {
-      for (let d = 0; d <= 7; d++) {
-        if (isZeroColor(c, d) || Represent(c, d)) {
-          newBoard[d][c] = 0;
-          for (const direction of directions) {
-            const dx = direction[0];
-            const dy = direction[1];
-            for (let a: number = 1; a <= 6; a++) {
-              if (isNewValid(c + dx * a, d + dy * a) && isAnotherColor(c + dx * a, d + dy * a)) {
-                if (
-                  isNewValid(c + dx * (a + 1), d + dy * (a + 1)) &&
-                  isSameColor(c + dx * (a + 1), d + dy * (a + 1))
-                ) {
-                  newBoard[d][c] = 3;
-                  candidatecount++;
-                  break;
-                }
-              } else {
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    let blackCount = 0;
-    let whiteCount = 0;
-    board.forEach((row) => {
-      row.forEach((cell) => {
-        if (cell === 1) blackCount++;
-        if (cell === 2) whiteCount++;
-      });
-    });
-    setBlackStones(blackCount);
-    setWhiteStones(whiteCount);
-
-    // if (candidatecount === 0 && turnColor !== 3 - turnColor) {
-    //   setTurnColor(3 - turnColor);
-    // }
-    setBoard(newBoard);
   };
 
   return (
-    <div className={styles.mainContainer}>
-      <div className={`${styles.setcontainer} ${styles.alignCenter}`}>
-        <div
-          className={`${styles.yourturn} ${styles.textLarge} ${styles.textBold} ${styles.textCenter}`}
-        >
-          Turn: {turnColor === 1 ? 'Black' : 'White'}
+    <div className={styles.container}>
+      <div className={styles.setcontainer}>
+        {board.flat().filter((cell) => cell === 3).length === 0
+          ? '終'
+          : turnColor === 1
+            ? '黒'
+            : '白'}
+        <div className={styles.textBold}>
+          siro:{board.flat().filter((cell) => cell === 2).length}
         </div>
-        <div className={`${styles.numcolor} ${styles.textLarge} ${styles.textCenter}`}>
-          <div className={styles.textBold}>Black Stones: {blackStones}</div>
-          <div className={styles.textBold}>White Stones: {whiteStones}</div>
+        <div className={styles.textBold}>
+          kuro:{board.flat().filter((cell) => cell === 1).length}
         </div>
       </div>
       <div className={styles.board}>
@@ -164,7 +124,9 @@ const Home = () => {
                   style={{ background: color === 1 ? '#000' : '#fff' }}
                 />
               )}
-              {color === 3 && <div className={styles.circle} style={{ background: '#0000FF' }} />}
+              {color === 3 && (
+                <div className={styles.circle} style={{ background: '#rgb(0 200 200 / 100%)' }} />
+              )}
             </div>
           )),
         )}
