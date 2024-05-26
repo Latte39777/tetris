@@ -15,18 +15,18 @@ const directions = [
 const reversePlace = (x: number, y: number, board: number[][], turnColor: number) => {
   board[y][x] = turnColor;
   for (const direction of directions) {
-    const dx = direction[0];
-    const dy = direction[1];
     for (let a: number = 1; a <= 6; a++) {
-      if (board[y + dy * a] !== undefined && board[y + dy * a][x + dx * a] === 3 - turnColor) {
+      if (
+        board[y + direction[1] * a] !== undefined &&
+        board[y + direction[1] * a][x + direction[0] * a] === 3 - turnColor
+      ) {
         if (
-          board[y + dy * (a + 1)] !== undefined &&
-          board[y + dy * (a + 1)][x + dx * (a + 1)] === turnColor
+          board[y + direction[1] * (a + 1)] !== undefined &&
+          board[y + direction[1] * (a + 1)][x + direction[0] * (a + 1)] === turnColor
         ) {
           for (let b: number = 1; b <= a; b++) {
-            board[y + dy * b][x + dx * b] = turnColor;
+            board[y + direction[1] * b][x + direction[0] * b] = turnColor;
           }
-          break;
         }
       } else {
         break;
@@ -43,17 +43,17 @@ const getPutPlace = (board: number[][], turnColor: number, passCount: number) =>
       if (board[d][c] === 0 || board[d][c] === 3) {
         board[d][c] = 0;
         for (const direction of directions) {
-          const dx = direction[0];
-          const dy = direction[1];
           for (let a: number = 1; a <= 6; a++) {
-            if (board[d + dy * a] !== undefined && board[d + dy * a][c + dx * a] === turnColor) {
+            if (
+              board[d + direction[1] * a] !== undefined &&
+              board[d + direction[1] * a][c + direction[0] * a] === turnColor
+            ) {
               if (
-                board[d + dy * (a + 1)] !== undefined &&
-                board[d + dy * (a + 1)][c + dx * (a + 1)] === 3 - turnColor
+                board[d + direction[1] * (a + 1)] !== undefined &&
+                board[d + direction[1] * (a + 1)][c + direction[0] * (a + 1)] === 3 - turnColor
               ) {
                 candidatecount++;
                 board[d][c] = 3;
-                break;
               }
             } else {
               break;
@@ -65,6 +65,7 @@ const getPutPlace = (board: number[][], turnColor: number, passCount: number) =>
   }
   if (candidatecount === 0 && passCount <= 2) {
     getPutPlace(board, 3 - turnColor, 1 + passCount);
+    console.log('AA', passCount);
   }
   return board;
 };
@@ -72,6 +73,14 @@ const getPutPlace = (board: number[][], turnColor: number, passCount: number) =>
 const Home = () => {
   const [turnColor, setTurnColor] = useState(1);
   const [board, setBoard] = useState([
+    // [0, 0, 0, 0, 0, 3, 2, 1],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 3, 2, 1],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 3, 2, 1],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
+    // [0, 0, 0, 0, 0, 3, 2, 1],
+    // [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 3, 0, 0, 0, 0],
@@ -88,7 +97,9 @@ const Home = () => {
       const newBoard = structuredClone(board);
       const reversed = reversePlace(x, y, newBoard, turnColor);
       const getPutted = getPutPlace(reversed, turnColor, passCount);
-      setTurnColor(3 - turnColor);
+      if (passCount === 0) {
+        setTurnColor(3 - turnColor);
+      }
       setBoard(getPutted);
     }
   };
@@ -97,7 +108,7 @@ const Home = () => {
     <div className={styles.container}>
       <div className={styles.setcontainer}>
         {board.flat().filter((cell) => cell === 3).length === 0
-          ? '終'
+          ? 'サ終'
           : turnColor === 1
             ? '黒'
             : '白'}
@@ -112,7 +123,7 @@ const Home = () => {
         {board.map((row, y) =>
           row.map((color, x) => (
             <div
-              className={`${styles.cell} ${styles.alignCenter}`}
+              className={styles.cell}
               key={`${x}-${y}`}
               onClick={() => {
                 clickHandler(x, y);
@@ -121,11 +132,11 @@ const Home = () => {
               {color !== 0 && color !== 3 && (
                 <div
                   className={styles.stone}
-                  style={{ background: color === 1 ? '#000' : '#fff' }}
+                  style={{ background: color === 1 ? '#000' : '#ffff' }}
                 />
               )}
               {color === 3 && (
-                <div className={styles.circle} style={{ background: '#rgb(0 200 200 / 100%)' }} />
+                <div className={styles.circle} style={{ background: '#rgb(0 200 200)' }} />
               )}
             </div>
           )),
