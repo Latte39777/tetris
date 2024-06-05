@@ -1,6 +1,8 @@
 .container {
   display: flex;
-  flex-direction: column;
+
+  /* flex-direction: column; */
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -8,48 +10,171 @@
   padding: 0 0.5rem;
 }
 
+.worldboard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 361px;
+  height: 711px;
+  border: 5px solid;
+  border-color: #7f8cff;
+  border-radius: 10px;
+}
+
 .board {
   display: flex;
   flex-wrap: wrap;
-  width: 640px;
-  height: 640px;
-  background-color: rgb(220 220 220);
+  width: 350px;
+  height: 700px;
+  background-color: #fff;
 }
 
 .cell {
   display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #000a88;
+  border: solid 2px;
+  border-color: #999;
+  border-radius: 5px;
+}
+
+.informationBoard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 700px;
+  margin-left: 5px;
+
+  /* background-color: #000000; */
+}
+
+.nextMino {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  font-size: 40px;
+
+  /* background-color: #999; */
+  border: 10px solid;
+  border-color: #7f8cff;
+  border-radius: 30px;
+}
+
+.operationBox {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 100px;
+
+  /* background-color: #f00; */
+}
+
+.directionButton {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   width: 80px;
-  height: 80px;
-  border: 0.5px solid black;
+  height: 50px;
+  font-size: 30px;
+  background-color: #666;
+  border: 5px solid;
+  border-color: #bbb;
+  border-radius: 10px;
 }
 
-.stone {
-  display: flex;
-  width: 55px;
-  height: 55px;
-  background-color: white;
-  border-radius: 100%;
+.directionButton:active {
+  transform: translateY(2px);
 }
 
-.circle {
+.iStone {
   display: flex;
-  width: 20px;
-  height: 20px;
-  background-color: rgb(0 200 200 / 100%);
-  border-radius: 100%;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #0cf;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #85e7ff #009cc4 #005a70;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
 }
 
-.setcontainer {
+.oStone {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 635px;
-  height: 100px;
-  padding: 0 0.5rem;
-  font-size: 20px;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #fe0;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #fff783 #b8ab00 #7e7500;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
+}
 
-  /* background-color: rgb(180 180 180); */
+.sStone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #3f0;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #9aff80 #20a100 #197c00;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
+}
+
+.zStone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #f00;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #ff7a7a #c70000 #7e0000;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
+}
+
+.lStone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #ff7300;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #ffbc84 #c75a00 #7c3800;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
+}
+
+.jStone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #0004ff;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #7f81ff #0003c0 #00027c;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
+}
+
+.tStone {
+  display: flex;
+  flex-wrap: wrap;
+  width: 35px;
+  height: 35px;
+  background-color: #c0f;
+  border: 3px solid; /* 左右の幅を3pxに */
+  border-color: #e57eff #a500ce #530068;
+  border-top-width: 5px; /* 上部の幅を5pxに */
+  border-bottom-width: 5px; /* 下部の幅を5pxに */
 }
