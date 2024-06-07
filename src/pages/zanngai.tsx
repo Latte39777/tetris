@@ -49,3 +49,30 @@
 //   ];
 //   return tMino;
 // }
+
+const minoMovement = (board: number[][], minoNunber: number, direction: number) => {
+  const movedBoard = structuredClone(board);
+  for (let a = 0; a <= 10; a++) {
+    for (let b = 0; b <= 20; b++) {
+      //左に動かす
+      if (direction === 1) {
+        if (board[b][a] === minoNunber && board[b][a - 1] !== undefined) {
+          board[b][a - 1] = minoNunber;
+        }
+      }
+      //下に動かす
+      if (direction === 2) {
+        if (board[b][a] === minoNunber && board[b - 1][a] !== undefined) {
+          board[b - 1][a] = minoNunber;
+        }
+      }
+      //右に動かす
+      if (direction === 0) {
+        if (board[b][a] === minoNunber && board[b][a + 1] !== undefined) {
+          board[b][a + 1] = minoNunber;
+        }
+      }
+    }
+  }
+  return board;
+};
