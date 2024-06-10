@@ -1,13 +1,12 @@
 .container {
   display: flex;
-
-  /* flex-direction: column; */
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
+  background-color: #00027c;
 }
 
 .worldboard {
@@ -18,7 +17,7 @@
   width: 361px;
   height: 711px;
   border: 5px solid;
-  border-color: #7f8cff;
+  border-color: #00920c;
   border-radius: 10px;
 }
 
@@ -35,10 +34,11 @@
   flex-wrap: wrap;
   width: 35px;
   height: 35px;
-  background-color: #000a88;
-  border: solid 2px;
+  background-color: #9cdbff;
+  border: solid 1px;
   border-color: #999;
-  border-radius: 5px;
+
+  /* border-radius: px; */
 }
 
 .informationBoard {
@@ -49,8 +49,6 @@
   width: 250px;
   height: 700px;
   margin-left: 5px;
-
-  /* background-color: #000000; */
 }
 
 .nextMino {
@@ -59,10 +57,9 @@
   width: 200px;
   height: 200px;
   font-size: 40px;
-
-  /* background-color: #999; */
+  color: #fff;
   border: 10px solid;
-  border-color: #7f8cff;
+  border-color: #fff;
   border-radius: 30px;
 }
 
@@ -73,8 +70,6 @@
   justify-content: center;
   width: 250px;
   height: 100px;
-
-  /* background-color: #f00; */
 }
 
 .directionButton {

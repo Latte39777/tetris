@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import minoLack from '../functions/gameLack';
 
 const useGame = () => {
-  const { minoAppear, minoStayLeft, minoStayBottom, minoStayRight } = minoLack();
+  const { minoAppear, minoStayLeft, minoStayBottom, minoStayRight, hardDrop, delateLine, minoOpt } =
+    minoLack();
 
   const [board, setBoard] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -24,70 +25,74 @@ const useGame = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 2, 3, 4, 5, 6, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
 
+  const [firstMino, setFirstMino] = useState([0, 1, 2, 3, 4, 5, 6, 7]);
+
   const minoMovement = (minoNunber: number, direction: number) => {
+    // const minoList = minoOpt();
     const movedBoard = structuredClone(board);
     if (direction === 0) {
-      const leftPlased = minoStayLeft(movedBoard, 7);
+      const leftPlased = minoStayLeft(movedBoard, 6);
       setBoard(leftPlased);
     }
     if (direction === 1) {
-      const bottomPlased = minoStayBottom(movedBoard, 7);
+      const bottomPlased = minoStayBottom(movedBoard, 6);
       setBoard(bottomPlased);
     }
     if (direction === 2) {
-      const rightPlased = minoStayRight(movedBoard, 7);
+      const rightPlased = minoStayRight(movedBoard, 6);
       setBoard(rightPlased);
     }
   };
 
-  // const keyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
-  //   const movedBoard = structuredClone(board);
-  //   const key = e.code;
-  //   const minoPlace = [];
-  //   for (let a = 0; a < movedBoard[0].length; a++) {
-  //     for (let b = 0; b < movedBoard.length; b++) {
-  //       if (movedBoard[b][a] === 7) {
-  //         minoPlace.push([a, b]);
-  //         movedBoard[b][a] = 0;
-  //       }
-  //     }
-  //   }
-  //   //左に動かす
-  //   for (const [ax, by] of minoPlace) {
-  //     if (key === 'ArrowLeft') {
-  //       if (movedBoard[by][ax - 1] !== undefined && movedBoard[by][ax - 1] === 0) {
-  //         movedBoard[by][ax - 1] = 7;
-  //       }
-  //     }
-  //     //下に動かす
-  //     if (key === 'ArrowDown') {
-  //       if (movedBoard[by + 1][ax] !== undefined && movedBoard[by + 1][ax] === 0) {
-  //         movedBoard[by + 1][ax] = 7;
-  //       }
-  //     }
-  //     //右に動かす
-  //     if (key === 'ArrowRight') {
-  //       if (movedBoard[by][ax + 1] !== undefined && movedBoard[by][ax + 1] === 0) {
-  //         movedBoard[by][ax + 1] = 7;
-  //       }
-  //     }
-  //   }
-  //   setBoard(movedBoard);
-  // };
+  const keyDownHandler = (e: KeyboardEvent) => {
+    let n = 0;
+    const a = board.flat().filter((cell) => cell > 10).length;
+    const key = e.code;
+    const movedBoard = structuredClone(board);
+    if (key === 'ArrowLeft') {
+      const leftPlased = minoStayLeft(movedBoard, firstMino[n]);
+      setBoard(leftPlased);
+    }
+    if (key === 'ArrowDown') {
+      const bottomPlased = minoStayBottom(movedBoard, firstMino[n]);
+      const delatedLines = delateLine(bottomPlased);
+      setBoard(delatedLines);
+      if (a < delatedLines.flat().filter((cell) => cell > 10).length) {
+        const minoAppeared = minoAppear(delatedLines, firstMino[n]);
+        setBoard(minoAppeared);
+        n++;
+      }
+    }
+    if (key === 'ArrowRight') {
+      const rightPlased = minoStayRight(movedBoard, firstMino[n]);
+      setBoard(rightPlased);
+    }
+    if (key === 'Space') {
+      const hardDroped = hardDrop(movedBoard, firstMino[n]);
+      const delatedLines = delateLine(hardDroped);
+      if (a < delatedLines.flat().filter((cell) => cell > 10).length) {
+        const minoAppeared = minoAppear(delatedLines, firstMino[n]);
+        setBoard(minoAppeared);
+        n++;
+      }
+    }
+    if (n === 7) {
+      clickHandler();
+    }
+  };
 
   const downCell = () => {
     console.log('down');
   };
 
-  const clickHandler = (x: number, y: number) => {
-    console.log(x, y);
+  const clickHandler = () => {
+    const minoList = minoOpt();
     const newBoard = structuredClone(board);
-    // minoLack();
-    // minoOpt();
-    const minoAppered = minoAppear(newBoard, 7);
+    const minoAppered = minoAppear(newBoard, 6);
+    setFirstMino(minoList);
     setBoard(minoAppered);
   };
 
@@ -100,7 +105,7 @@ const useGame = () => {
     minoStayLeft,
     minoStayBottom,
     minoStayRight,
-    // keyDownHandler,
+    keyDownHandler,
   };
 };
 

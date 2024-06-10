@@ -1,14 +1,3 @@
-// const directions = [
-//   [0, 1],
-//   [1, 1],
-//   [1, 0],
-//   [1, -1],
-//   [0, -1],
-//   [-1, -1],
-//   [-1, 0],
-//   [-1, 1],
-// ];
-
 const minoLack = () => {
   function getRandomNumber() {
     const minoNumber = Math.floor(Math.random() * 7) + 1;
@@ -81,7 +70,7 @@ const minoLack = () => {
     for (let a = 0; a < 20; a++) {
       let deletePossibiltty = 0;
       for (let row = 0; row < 10; row++) {
-        if (board[a][row] !== 0) {
+        if (board[a][row] >= 10) {
           deletePossibiltty++;
         }
       }
@@ -127,18 +116,30 @@ const minoLack = () => {
       for (let b = 0; b < 20; b++) {
         if (board[b][a] === minoNunber) {
           minoPlace.push([a, b]);
-          if (board[b + 1][a] >= 10 || b + 1 === 19) {
+          // if (b === 18 || board[b + 2][a] >= 10) {
+          //   exist = true;
+          // }
+          if (b === 19 || board[b + 1][a] > 10) {
             exist = true;
           }
         }
       }
     }
+    // if (exist === true) {
+    //   for (const [ax, by] of minoPlace) {
+    //     board[by][ax] = 0;
+    //   }
+    //   for (const [ax, by] of minoPlace) {
+    //     board[by + 1][ax] = minoNunber * 10 + minoNunber;
+    //   }
+    // }
     if (exist === true) {
       for (const [ax, by] of minoPlace) {
         board[by][ax] = 0;
       }
       for (const [ax, by] of minoPlace) {
-        board[by + 1][ax] = minoNunber * 10 + minoNunber;
+        board[by][ax] = minoNunber * 10 + minoNunber;
+        // minoAppear(board, minoNunber);
       }
     }
     if (exist === false) {
@@ -149,6 +150,7 @@ const minoLack = () => {
         board[by + 1][ax] = minoNunber;
       }
     }
+    console.log(board);
     return board;
   };
 
@@ -177,7 +179,7 @@ const minoLack = () => {
     return board;
   };
 
-  //ミノ回転
+  //ミノ回転(上ボタン)
   // const minoRotate = (board: number[][], minoNunber: number) => {
   //   for (let a = 0; a <= 10; a++) {
   //     for (let b = 0; b <= 20; b++) {
@@ -187,14 +189,42 @@ const minoLack = () => {
   //   }
   // };
 
+  //ミノ スペースのやつ
+  const hardDrop = (board: number[][], minoNunber: number) => {
+    const minoPlace = [];
+    const minList = [];
+    for (let a = 0; a < 10; a++) {
+      for (let b = 0; b < 20; b++) {
+        if (board[b][a] === minoNunber) {
+          minoPlace.push([a, b]);
+          for (let blankNumber = 0; blankNumber < 20; blankNumber++) {
+            if (b + blankNumber === 19 || board[b + blankNumber + 1][a] > 10) {
+              minList.push(blankNumber);
+              break;
+            }
+          }
+        }
+      }
+    }
+    const countedBlank = Math.min(...minList);
+    console.log(countedBlank);
+    for (const [ax, by] of minoPlace) {
+      board[by][ax] = 0;
+    }
+    for (const [ax, by] of minoPlace) {
+      board[by + countedBlank][ax] = minoNunber * 10 + minoNunber;
+    }
+    return board;
+  };
+
   return {
     minoOpt,
     minoAppear,
-    // minoMovement,
     delateLine,
     minoStayLeft,
     minoStayBottom,
     minoStayRight,
+    hardDrop,
   };
 };
 
