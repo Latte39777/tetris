@@ -4,7 +4,6 @@ import Board from '../components/Board';
 import useGame from '../components/useGame';
 
 const Home: React.FC = () => {
-  // const { downCell, clickHandler, board, minoMovement } = useGame();
   const { downCell, clickHandler, board, minoMovement, keyDownHandler } = useGame();
 
   useEffect(() => {

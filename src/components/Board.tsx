@@ -5,7 +5,7 @@ interface Props {
   clickHandler: (x: number, y: number) => void;
   downCell: () => void;
   board: number[][];
-  minoMovement: (minoNunber: number, direction: number) => void;
+  minoMovement: (direction: number) => void;
 }
 
 const Board: React.FC<Props> = ({ clickHandler, board, downCell, minoMovement }) => {
@@ -44,7 +44,7 @@ const Board: React.FC<Props> = ({ clickHandler, board, downCell, minoMovement })
           <div
             className={styles.directionButton}
             onClick={() => {
-              minoMovement(7, 0);
+              minoMovement(0);
             }}
           >
             ←
@@ -52,7 +52,7 @@ const Board: React.FC<Props> = ({ clickHandler, board, downCell, minoMovement })
           <div
             className={styles.directionButton}
             onClick={() => {
-              minoMovement(7, 1);
+              minoMovement(1);
             }}
           >
             ↓
@@ -60,16 +60,16 @@ const Board: React.FC<Props> = ({ clickHandler, board, downCell, minoMovement })
           <div
             className={styles.directionButton}
             onClick={() => {
-              minoMovement(7, 2);
+              minoMovement(2);
             }}
           >
             →
           </div>
           <div
             className={styles.directionButton}
-            // onClick={() => {
-            //   minoMovement(board, minoNumber, direction);
-            // }}
+            onClick={() => {
+              minoMovement(3);
+            }}
           >
             ↑
           </div>

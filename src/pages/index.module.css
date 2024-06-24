@@ -6,7 +6,7 @@
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
-  background-color: #00027c;
+  background-color: #fff;
 }
 
 .worldboard {
@@ -17,7 +17,7 @@
   width: 361px;
   height: 711px;
   border: 5px solid;
-  border-color: #00920c;
+  border-color: #03f;
   border-radius: 10px;
 }
 
@@ -34,11 +34,10 @@
   flex-wrap: wrap;
   width: 35px;
   height: 35px;
-  background-color: #9cdbff;
+  background-color: #0032d5;
   border: solid 1px;
   border-color: #999;
-
-  /* border-radius: px; */
+  border-radius: 3px;
 }
 
 .informationBoard {
@@ -57,9 +56,9 @@
   width: 200px;
   height: 200px;
   font-size: 40px;
-  color: #fff;
+  color: #000;
   border: 10px solid;
-  border-color: #fff;
+  border-color: #03f;
   border-radius: 30px;
 }
 
